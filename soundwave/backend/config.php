@@ -10,7 +10,7 @@ define('DB_PASS',     '');
 define('DB_CHARSET',  'utf8mb4');
 define('BASE_URL',    'http://localhost/soundwave');
 define('ROOT_PATH',   __DIR__ . '/..');
-define('LASTFM_API_KEY', 'TU_API_KEY_AQUI');
+define('LASTFM_API_KEY', '59b5712647eac21fcc1dd1a181128013');
 define('LASTFM_BASE',    'https://ws.audioscrobbler.com/2.0/');
 define('MAX_FILE_SIZE',  52428800);
 define('ALLOWED_AUDIO',  array('mp3', 'wav', 'ogg', 'm4a'));
