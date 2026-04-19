@@ -1,0 +1,191 @@
+╔══════════════════════════════════════════════════════════════════════╗
+║              SOUNDWAVE — RUTAS DE LA API                            ║
+║          Para compartir con tu compañero de equipo                  ║
+║  Base URL: http://[IP_DEL_SERVIDOR]/soundwave                       ║
+║  Ejemplo local: http://localhost/soundwave                          ║
+╚══════════════════════════════════════════════════════════════════════╝
+
+NOTA: Todas las rutas requieren sesión activa (cookie de sesión PHP).
+      Las marcadas con [ADMIN] solo funcionan con rol administrador.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 1. AUTENTICACIÓN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  LOGIN
+    URL:    POST /backend/auth.php
+    Params: action=login  |  email=...  |  password=...
+    Resp:   Redirige a home.php (usuario) o admin.php (admin)
+
+  REGISTRO
+    URL:    POST /backend/auth.php
+    Params: action=register  |  nombre=...  |  email=...
+            password=...     |  confirm=...
+    Resp:   Redirige a login.php con mensaje de éxito
+
+  LOGOUT
+    URL:    GET /backend/auth.php?action=logout
+    Resp:   Destruye sesión y redirige a login.php
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 2. CANCIONES  →  /backend/songs.php
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  LISTAR CANCIONES
+    URL:    GET /backend/songs.php?action=list
+    Filtros opcionales:
+            &genre=pop          (filtrar por género)
+            &search=weeknd      (buscar en nombre/artista/album)
+            &limit=50           (máx resultados, default 50)
+            &offset=0           (paginación)
+    Resp:   { "songs": [ { id, nombre, artista, genero, duracion,
+                            imagen_url, album, fecha_lanzamiento,
+                            archivo_url } ] }
+
+  DETALLE DE UNA CANCIÓN
+    URL:    GET /backend/songs.php?action=get&id=5
+    Resp:   { "song": { ...todos los campos... } }
+
+  SUBIR CANCIÓN  [ADMIN]
+    URL:    POST /backend/songs.php
+    Params: action=upload  (multipart/form-data)
+    Body:   nombre, artista, genero, album, fecha_lanzamiento,
+            duracion (segundos), archivo (FILE mp3/wav/ogg/m4a),
+            imagen (FILE jpg/png, opcional)
+    Resp:   { "success": true, "id": 12, "message": "..." }
+
+  ELIMINAR CANCIÓN  [ADMIN]
+    URL:    POST /backend/songs.php
+    Params: action=delete  |  id=12
+    Resp:   { "success": true, "message": "..." }
+
+  REGISTRAR REPRODUCCIÓN
+    URL:    POST /backend/songs.php
+    Params: action=history  |  song_id=5
+    Resp:   { "success": true }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 3. PLAYLISTS  →  /backend/playlists.php
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  LISTAR MIS PLAYLISTS
+    URL:    GET /backend/playlists.php?action=list
+    Resp:   { "playlists": [ { id, nombre, descripcion,
+                                portada_url, total_canciones,
+                                created_at } ] }
+
+  CREAR PLAYLIST
+    URL:    POST /backend/playlists.php
+    Params: action=create  |  nombre=...  |  descripcion=...
+            portada (FILE imagen, opcional)
+    Resp:   { "success": true, "id": 3 }
+
+  VER PLAYLIST CON SUS CANCIONES
+    URL:    GET /backend/playlists.php?action=get&id=3
+    Resp:   { "playlist": { ...datos..., "songs": [ {...} ] } }
+
+  ACTUALIZAR NOMBRE / DESCRIPCIÓN
+    URL:    POST /backend/playlists.php
+    Params: action=update  |  id=3  |  nombre=...  |  descripcion=...
+    Resp:   { "success": true }
+
+  AGREGAR CANCIÓN A PLAYLIST
+    URL:    POST /backend/playlists.php
+    Params: action=add_song  |  playlist_id=3  |  song_id=7
+    Resp:   { "success": true, "message": "Cancion agregada." }
+    Error:  409 si la canción ya está en la playlist
+
+  QUITAR CANCIÓN DE PLAYLIST
+    URL:    POST /backend/playlists.php
+    Params: action=remove_song  |  playlist_id=3  |  song_id=7
+    Resp:   { "success": true }
+
+  ELIMINAR PLAYLIST
+    URL:    POST /backend/playlists.php
+    Params: action=delete  |  id=3
+    Resp:   { "success": true }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 4. RECOMENDACIONES  →  /backend/recommend.php
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  RECOMENDAR POR GÉNERO
+    URL:    GET /backend/recommend.php?action=by_genre&genre=pop
+    Géneros: pop, rock, hip-hop, electronica, jazz, clasica,
+             reggaeton, metal, latin, r&b, soul, country,
+             blues, indie
+    Resp:   { "recommendations": [ { nombre, artista, url,
+                                      imagen } ],
+              "genre": "pop" }
+
+  SIGUIENTE CANCIÓN RECOMENDADA (al terminar reproducción)
+    URL:    GET /backend/recommend.php?action=next&song_id=5
+    Resp:   { "recommendations": [ { nombre, artista, url, imagen } ],
+              "based_on_song":  "Blinding Lights",
+              "based_on_genre": "pop" }
+    Nota:   Primero busca canciones similares (track.getsimilar),
+            si no encuentra cae en las top del género.
+
+  CANCIONES SIMILARES A UN TRACK ESPECÍFICO
+    URL:    GET /backend/recommend.php?action=similar
+            &artist=The+Weeknd&track=Starboy
+    Resp:   { "recommendations": [ { nombre, artista, url, imagen } ] }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 5. PANEL ADMIN  →  /backend/admin_api.php  [ADMIN]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ESTADÍSTICAS GENERALES
+    URL:    GET /backend/admin_api.php?action=stats
+    Resp:   { "songs": 24, "users": 8,
+              "plays": 150, "playlists": 12 }
+
+  LISTAR TODOS LOS USUARIOS
+    URL:    GET /backend/admin_api.php?action=users
+    Resp:   { "users": [ { id, nombre, email, role, created_at } ] }
+
+  ELIMINAR USUARIO
+    URL:    POST /backend/admin_api.php
+    Params: action=delete_user  |  id=4
+    Resp:   { "success": true }
+    Nota:   No se puede eliminar admins ni a uno mismo.
+
+  CAMBIAR ROL DE USUARIO
+    URL:    POST /backend/admin_api.php
+    Params: action=change_role  |  id=4  |  role=admin
+    Roles:  admin  |  user
+    Resp:   { "success": true }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 6. PÁGINAS WEB (para navegador)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  /                                → redirige según sesión
+  /frontend/pages/login.php        → pantalla de login
+  /frontend/pages/register.php     → registro de nuevo usuario
+  /frontend/pages/home.php         → biblioteca de canciones
+  /frontend/pages/playlists.php    → mis playlists
+  /frontend/pages/admin.php        → panel admin [ADMIN]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 7. CÓDIGOS DE RESPUESTA HTTP
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  200  OK — operación exitosa
+  401  No autenticado — necesitas iniciar sesión
+  403  Acceso denegado — necesitas rol admin
+  404  No encontrado — el recurso no existe
+  409  Conflicto — ej. canción ya en playlist
+  422  Error de validación — faltan campos obligatorios
+  500  Error del servidor — revisar permisos de carpetas
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ 8. CREDENCIALES ADMIN POR DEFECTO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Email:      admin@soundwave.com
+  Contraseña: admin123
+
+  ⚠️  Cambia esta contraseña después del primer acceso.
+
+═══════════════════════════════════════════════════════════════════════
