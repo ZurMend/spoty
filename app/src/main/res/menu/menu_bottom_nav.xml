@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_music_note"
+        android:title="Inicio"/>
+
+    <item
+        android:id="@+id/nav_playlists"
+        android:icon="@drawable/ic_playlist"
+        android:title="Playlists"/>
+
+    <item
+        android:id="@+id/nav_player"
+        android:icon="@drawable/ic_play"
+        android:title="Reproductor"/>
+
+    <item
+        android:id="@+id/nav_recommend"
+        android:icon="@drawable/ic_recommend"
+        android:title="Descubrir"/>
+
+    <item
+        android:id="@+id/nav_admin"
+        android:icon="@drawable/ic_admin"
+        android:title="Admin"
+        android:visible="false"/>
+
+</menu>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_dark">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Panel Admin"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:padding="16dp"/>
+
+    <!-- Estadísticas -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="8dp">
+
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:orientation="vertical" android:gravity="center"
+            android:background="@color/bg_card" android:padding="12dp" android:layout_margin="4dp">
+            <TextView android:id="@+id/tvStatSongs" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="0" android:textSize="22sp"
+                android:textStyle="bold" android:textColor="@color/accent"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Canciones" android:textColor="@color/text_secondary" android:textSize="11sp"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:orientation="vertical" android:gravity="center"
+            android:background="@color/bg_card" android:padding="12dp" android:layout_margin="4dp">
+            <TextView android:id="@+id/tvStatUsers" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="0" android:textSize="22sp"
+                android:textStyle="bold" android:textColor="@color/accent"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Usuarios" android:textColor="@color/text_secondary" android:textSize="11sp"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:orientation="vertical" android:gravity="center"
+            android:background="@color/bg_card" android:padding="12dp" android:layout_margin="4dp">
+            <TextView android:id="@+id/tvStatPlays" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="0" android:textSize="22sp"
+                android:textStyle="bold" android:textColor="@color/accent"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Plays" android:textColor="@color/text_secondary" android:textSize="11sp"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:orientation="vertical" android:gravity="center"
+            android:background="@color/bg_card" android:padding="12dp" android:layout_margin="4dp">
+            <TextView android:id="@+id/tvStatPlaylists" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="0" android:textSize="22sp"
+                android:textStyle="bold" android:textColor="@color/accent"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Playlists" android:textColor="@color/text_secondary" android:textSize="11sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Usuarios"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:paddingStart="16dp"
+        android:paddingTop="12dp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerUsers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>

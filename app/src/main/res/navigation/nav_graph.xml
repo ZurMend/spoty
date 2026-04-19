@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_home">
+
+    <fragment android:id="@+id/nav_home"
+        android:name="com.musicapp.ui.home.HomeFragment"
+        android:label="Inicio"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment android:id="@+id/nav_player"
+        android:name="com.musicapp.ui.player.PlayerFragment"
+        android:label="Reproductor"
+        tools:layout="@layout/fragment_player"/>
+
+    <fragment android:id="@+id/nav_playlists"
+        android:name="com.musicapp.ui.playlists.PlaylistsFragment"
+        android:label="Playlists"
+        tools:layout="@layout/fragment_playlists"/>
+
+    <fragment android:id="@+id/nav_playlist_detail"
+        android:name="com.musicapp.ui.playlists.PlaylistDetailFragment"
+        android:label="Playlist"
+        tools:layout="@layout/fragment_playlist_detail"/>
+
+    <fragment android:id="@+id/nav_recommend"
+        android:name="com.musicapp.ui.recommend.RecommendFragment"
+        android:label="Descubrir"
+        tools:layout="@layout/fragment_recommend"/>
+
+    <fragment android:id="@+id/nav_admin"
+        android:name="com.musicapp.ui.admin.AdminFragment"
+        android:label="Admin"
+        tools:layout="@layout/fragment_admin"/>
+
+</navigation>
